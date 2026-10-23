@@ -4,7 +4,7 @@ ClinicHub is a web-based clinic management system built with ASP.NET Core MVC an
 
 ## 🔗 GitHub Repository
 
-[ClinicHub Repository](https://github.com/EmranAbdeen/ClinicHub.git)
+[ClinicHub Repository](https://github.com/EmranAbdeen/ClinicHub)
 
 ## Features
 
