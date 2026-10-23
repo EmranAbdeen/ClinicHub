@@ -1,12 +1,10 @@
 # ClinicHub – Smart Clinic Appointment Management System
 
-ClinicHub is a web-based clinic management system built with ASP.NET Core MVC and SQL Server.
-It allows users to manage doctors, patients, specialties, doctor schedules, and appointments.
-The system supports Admin, Doctor, and Patient roles, with session-based authentication and role-based access control.
+ClinicHub is a web-based clinic management system built with ASP.NET Core MVC and SQL Server. It helps manage doctors, patients, medical specialties, working schedules, and appointments in one place. The system provides separate accounts for administrators, doctors, and patients, with different permissions for each role.
 
 ## 🔗 GitHub Repository
 
-[ClinicHub Repository](YOUR_GITHUB_REPOSITORY_URL)
+[ClinicHub Repository](https://github.com/EmranAbdeen/ClinicHub.git)
 
 ## Features
 
@@ -100,7 +98,7 @@ The database must contain the required tables and initial data, including the ro
 Clone the repository and navigate to the directory containing `ClinicHub.csproj`:
 
 ```bash
-git clone YOUR_GITHUB_REPOSITORY_URL
+git clone https://github.com/EmranAbdeen/ClinicHub.git
 cd ClinicHub
 dotnet restore
 dotnet run
