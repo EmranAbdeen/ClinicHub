@@ -1,0 +1,208 @@
+@using ClinicHub.DTOs.Appointment
+@using ClinicHub.Models.Enums
+@model List<AppointmentListDto>
+@{
+    ViewData["Title"] = "Appointments";
+    Layout = "_LayoutAdmin";
+}
+
+@if (TempData["Success"] is string message)
+{
+    var alertClass = TempData["SuccessType"]?.ToString() == "danger" ? "alert-danger" : "alert-success";
+    <div class="alert @alertClass alert-dismissible fade show" role="alert">
+        @message
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+<div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+    <div>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb mb-2">
+                <li class="breadcrumb-item">
+                    <a asp-controller="Dashboard" asp-action="Index" class="text-decoration-none">Dashboard</a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">Appointments</li>
+            </ol>
+        </nav>
+        <h1 class="h3 mb-1">Appointments</h1>
+        <p class="text-secondary mb-0">Review bookings and update appointment status.</p>
+    </div>
+</div>
+
+<section class="card mb-4">
+    <div class="card-body">
+        <form asp-action="Index" method="get" class="row g-3 align-items-end">
+            <div class="col-md-4">
+                <label class="form-label" for="search">Search</label>
+                <input id="search" type="text" name="search" value="@ViewBag.Search"
+                       class="form-control" placeholder="Patient or doctor" />
+            </div>
+
+            <div class="col-md-3">
+                <label class="form-label" for="status">Status</label>
+                <select id="status" name="status" class="form-select">
+                    <option value="">All statuses</option>
+                    @foreach (var status in Enum.GetValues<AppointmentStatus>())
+                    {
+                        if (ViewBag.Status != null && (AppointmentStatus)ViewBag.Status == status)
+                        {
+                            <option value="@status" selected>@status</option>
+                        }
+                        else
+                        {
+                            <option value="@status">@status</option>
+                        }
+                    }
+                </select>
+            </div>
+
+            <div class="col-md-3">
+                <label class="form-label" for="date">Date</label>
+                <input id="date" type="date" name="date"
+                       value="@(ViewBag.Date != null ? ((DateOnly)ViewBag.Date).ToString("yyyy-MM-dd") : "")"
+                       class="form-control" />
+            </div>
+
+            <div class="col-md-2 d-flex gap-2">
+                <button type="submit" class="btn btn-primary flex-grow-1"><i class="bi bi-search me-1"></i>Search</button>
+                <a asp-action="Index" class="btn btn-outline-secondary"><i class="bi bi-arrow-counterclockwise me-1"></i>Reset</a>
+            </div>
+        </form>
+    </div>
+</section>
+
+<section class="card">
+    <div class="card-header bg-white d-flex justify-content-between align-items-center">
+        <h2 class="h5 mb-0">Appointment schedule</h2>
+        <span class="badge text-bg-primary">@(Model?.Count ?? 0)</span>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th>Patient</th>
+                    <th>Doctor</th>
+                    <th>Specialty</th>
+                    <th>Date &amp; time</th>
+                    <th>Status</th>
+                    <th>Notes</th>
+                    <th class="text-end">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model?.Any() == true)
+                {
+                    foreach (var appointment in Model)
+                    {
+                        var badge = appointment.Status switch
+                        {
+                            AppointmentStatus.Pending   => "text-bg-warning",
+                            AppointmentStatus.Confirmed => "text-bg-primary",
+                            AppointmentStatus.Completed => "text-bg-success",
+                            AppointmentStatus.Cancelled => "text-bg-danger",
+                            _                           => "text-bg-secondary"
+                        };
+
+                        <tr>
+                            <td class="fw-semibold">@appointment.PatientName</td>
+                            <td>Dr. @appointment.DoctorName</td>
+                            <td><span class="badge text-bg-light">@appointment.SpecialtyName</span></td>
+                            <td>
+                                <div>@appointment.AppointmentDate.ToString("dd MMM yyyy")</div>
+                                <small class="text-secondary">@appointment.AppointmentTime.ToString("HH:mm")</small>
+                            </td>
+                            <td><span class="badge @badge">@appointment.Status</span></td>
+                            <td>@(string.IsNullOrWhiteSpace(appointment.Notes) ? "—" : appointment.Notes)</td>
+                            <td>
+                                <div class="d-flex justify-content-end flex-wrap gap-1">
+                                    @if (appointment.Status == AppointmentStatus.Pending || appointment.Status == AppointmentStatus.Confirmed)
+                                    {
+                                        <form asp-action="ChangeStatus" method="post">
+                                            <input type="hidden" name="id" value="@appointment.Id" />
+                                            <select name="status" class="form-select form-select-sm"
+                                                    aria-label="Update status" onchange="this.form.submit()">
+                                                <option value="">Update</option>
+                                                @if (appointment.Status == AppointmentStatus.Pending)
+                                                {
+                                                    <option value="@((int)AppointmentStatus.Confirmed)">Confirm</option>
+                                                    <option value="@((int)AppointmentStatus.Cancelled)">Cancel</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@((int)AppointmentStatus.Completed)">Complete</option>
+                                                    <option value="@((int)AppointmentStatus.Cancelled)">Cancel</option>
+                                                }
+                                            </select>
+                                        </form>
+                                    }
+
+                                    <a asp-action="Details" asp-route-id="@appointment.Id" class="btn btn-sm btn-outline-primary"><i class="bi bi-eye me-1"></i>Details</a>
+                                    <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteAppointmentModal-@appointment.Id">
+                                    <i class="bi bi-trash me-1"></i>Delete 
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="7" class="text-center py-5">
+                            <h3 class="h5">No appointments found</h3>
+                            <p class="text-secondary mb-3">No appointments match the selected filters.</p>
+                            <a asp-action="Create" class="btn btn-primary">Add appointment</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</section>
+
+<!-- Delete Appointment Modals -->
+@if (Model?.Any() == true)
+{
+    foreach (var appointment in Model)
+    {
+        <div class="modal fade" id="deleteAppointmentModal-@appointment.Id"
+             tabindex="-1"
+             aria-labelledby="deleteAppointmentLabel-@appointment.Id"
+             aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="deleteAppointmentLabel-@appointment.Id">Confirm Delete</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+
+                    <div class="modal-body text-center">
+                        <i class="bi bi-exclamation-triangle text-warning fs-1"></i>
+                        <h5 class="mt-3">Are you sure?</h5>
+                        <p class="text-muted mb-3">Deleting this appointment cannot be undone.</p>
+                        <div class="fw-semibold">Patient: @appointment.PatientName</div>
+                        <div class="text-muted">Dr. @appointment.DoctorName • @appointment.SpecialtyName</div>
+                        <div class="text-muted">
+                            @appointment.AppointmentDate.ToString("dd MMM yyyy") - @appointment.AppointmentTime.ToString("HH:mm")
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <form asp-controller="Appointments" asp-action="Delete" method="post" class="d-inline">
+                            <input type="hidden" name="id" value="@appointment.Id" />
+                            <input type="hidden" name="returnUrl" value="@Url.Action("Index", "Appointments")" />
+                            <button type="submit" class="btn btn-danger">
+                                <i class="bi bi-trash me-1"></i>Yes, Delete
+                            </button>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    }
+}

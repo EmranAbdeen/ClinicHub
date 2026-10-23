@@ -1,0 +1,59 @@
+@model ClinicHub.Models.Content.ContactMessage
+@{
+    ViewData["Title"] = "Message Details";
+    Layout = "_LayoutAdmin";
+}
+
+<nav aria-label="breadcrumb" class="mb-3">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a asp-controller="Dashboard" asp-action="Index" class="text-decoration-none">Dashboard</a>
+        </li>
+        <li class="breadcrumb-item">
+            <a asp-action="Index" class="text-decoration-none">Contact messages</a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">Message details</li>
+    </ol>
+</nav>
+
+<div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+    <div>
+        <h1 class="h3 mb-1">Message details</h1>
+        <p class="text-secondary mb-0">Message received @Model.CreatedAt.ToString("dd MMM yyyy, hh:mm tt").</p>
+    </div>
+    <a asp-action="Index" class="btn btn-outline-secondary">Back to inbox</a>
+</div>
+
+<section class="card">
+    <div class="card-header bg-white d-flex justify-content-between align-items-center">
+        <h2 class="h5 mb-0">@Model.Subject</h2>
+        @if (Model.IsRead)
+        {
+            <span class="badge text-bg-success">Read</span>
+        }
+        else
+        {
+            <span class="badge text-bg-warning">Unread</span>
+        }
+    </div>
+
+    <div class="card-body">
+        <dl class="row">
+            <dt class="col-sm-3">From</dt>
+            <dd class="col-sm-9">@Model.FullName</dd>
+
+            <dt class="col-sm-3">Email</dt>
+            <dd class="col-sm-9">
+                <a href="mailto:@Model.Email">@Model.Email</a>
+            </dd>
+
+            <dt class="col-sm-3">Received</dt>
+            <dd class="col-sm-9">@Model.CreatedAt.ToString("dd MMMM yyyy, hh:mm tt")</dd>
+        </dl>
+
+        <hr />
+
+        <h3 class="h6">Message</h3>
+        <p class="mb-0">@Model.Message</p>
+    </div>
+</section>

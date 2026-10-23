@@ -1,0 +1,96 @@
+@model ClinicHub.DTOs.Specialties.SpecialtyListDto
+@{
+    ViewData["Title"] = "Specialty Details";
+    Layout = "_LayoutAdmin";
+}
+
+<nav aria-label="breadcrumb" class="mb-3">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a asp-controller="Dashboard" asp-action="Index" class="text-decoration-none">Dashboard</a>
+        </li>
+        <li class="breadcrumb-item">
+            <a asp-action="Index" class="text-decoration-none">Specialties</a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">Details</li>
+    </ol>
+</nav>
+
+<div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+    <div>
+        <h1 class="h3 mb-1">Specialty details</h1>
+        <p class="text-secondary mb-0">Department information and doctor assignments.</p>
+    </div>
+    <div class="d-flex gap-2">
+        <a asp-action="Index" class="btn btn-outline-secondary">Back to list</a>
+        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Edit specialty</a>
+    </div>
+</div>
+
+<div class="row g-4">
+
+    <!-- Specialty Card -->
+    <div class="col-lg-4">
+        <section class="card h-100">
+            <div class="card-body text-center">
+                @if (!string.IsNullOrEmpty(Model.IconOrImagePath))
+                {
+                    <img src="@Model.IconOrImagePath" alt="@Model.Name" width="150" height="150"
+                         class="rounded-3 object-fit-cover mb-3" />
+                }
+                else
+                {
+                    <div class="rounded-3 bg-primary text-white d-inline-flex align-items-center justify-content-center mb-3"
+                         style="width: 150px; height: 150px;">
+                        <span class="display-3">
+                            @(Model.Name?.FirstOrDefault().ToString().ToUpper() ?? "?")
+                        </span>
+                    </div>
+                }
+
+                <h2 class="h4">@Model.Name</h2>
+
+                @if (Model.IsActive)
+                {
+                    <span class="badge text-bg-success">Active</span>
+                }
+                else
+                {
+                    <span class="badge text-bg-secondary">Inactive</span>
+                }
+            </div>
+        </section>
+    </div>
+
+    <!-- Details Card -->
+    <div class="col-lg-8">
+        <section class="card">
+            <div class="card-header bg-white">
+                <h2 class="h5 mb-0">Department information</h2>
+            </div>
+
+            <div class="card-body">
+                <dl class="row mb-0">
+                    <dt class="col-sm-4">Specialty</dt>
+                    <dd class="col-sm-8">@Model.Name</dd>
+
+                    <dt class="col-sm-4">Doctors assigned</dt>
+                    <dd class="col-sm-8">
+                        <span class="badge text-bg-light me-2">@Model.DoctorCount</span>
+                        @if (Model.DoctorCount > 0)
+                        {
+                            <a asp-controller="Doctors" asp-action="Index" asp-route-specialtyId="@Model.Id"
+                               class="small text-decoration-none">View doctors</a>
+                        }
+                    </dd>
+
+                    <dt class="col-sm-4">Description</dt>
+                    <dd class="col-sm-8">
+                        @(string.IsNullOrWhiteSpace(Model.Description) ? "No description provided." : Model.Description)
+                    </dd>
+                </dl>
+            </div>
+        </section>
+    </div>
+
+</div>

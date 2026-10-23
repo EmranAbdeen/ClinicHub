@@ -1,0 +1,88 @@
+@model ClinicHub.Models.Content.Testimonial
+@{
+    ViewData["Title"] = "Testimonial Details";
+    Layout = "_LayoutAdmin";
+}
+
+<nav aria-label="breadcrumb" class="mb-3">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a asp-controller="Dashboard" asp-action="Index" class="text-decoration-none">Dashboard</a>
+        </li>
+        <li class="breadcrumb-item">
+            <a asp-action="Index" class="text-decoration-none">Testimonials</a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">Details</li>
+    </ol>
+</nav>
+
+<div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+    <div>
+        <h1 class="h3 mb-1">Testimonial details</h1>
+        <p class="text-secondary mb-0">Patient feedback and publishing status.</p>
+    </div>
+    <div class="d-flex gap-2">
+        <a asp-action="Index" class="btn btn-outline-secondary">Back to list</a>
+        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Edit testimonial</a>
+    </div>
+</div>
+
+<div class="row g-4">
+    <div class="col-lg-4">
+        <section class="card h-100">
+            <div class="card-body text-center">
+                @if (!string.IsNullOrEmpty(Model.ImagePath))
+                {
+                    <img src="@Model.ImagePath" alt="@Model.PatientName" width="100" height="100"
+                         class="rounded-circle object-fit-cover mb-3" />
+                }
+                else
+                {
+                    <span class="badge rounded-pill text-bg-primary fs-2 mb-3">@Model.PatientName?.FirstOrDefault()</span>
+                }
+
+                <h2 class="h4">@Model.PatientName</h2>
+                <span>
+                                        <div class="text-warning">
+
+                                            @for (int i = 1; i <= 5; i++)
+                                            {
+                                                if (i <= Model.Rating)
+                                                {
+                                                    <i class="bi bi-star-fill"></i>
+                                                }
+                                                else
+                                                {
+                                                    <i class="bi bi-star"></i>
+                                                }
+                                            }
+
+                                        </div>
+                                    </span>
+            </div>
+        </section>
+    </div>
+
+    <div class="col-lg-8">
+        <section class="card">
+            <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                <h2 class="h5 mb-0">Review</h2>
+                @if (Model.IsVisible)
+                {
+                    <span class="badge text-bg-success">Visible</span>
+                }
+                else
+                {
+                    <span class="badge text-bg-secondary">Hidden</span>
+                }
+            </div>
+
+            <div class="card-body">
+                <p>@Model.Message</p>
+                <div class="small text-secondary">
+                    Submitted @Model.CreatedAt.ToString("dd MMMM yyyy, hh:mm tt")
+                </div>
+            </div>
+        </section>
+    </div>
+</div>

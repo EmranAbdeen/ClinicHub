@@ -1,0 +1,247 @@
+@using ClinicHub.Models.Clinic
+@using ClinicHub.Models.Enums
+@model List<Appointment>
+@{
+    ViewData["Title"] = "Dashboard";
+    Layout = "_LayoutAdmin";
+    var userRole = Context.Session.GetString("UserRole");
+}
+
+<!-- Page Header -->
+<div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+    <div>
+        <h1 class="h3 mb-1">Dashboard</h1>
+        <p class="text-secondary mb-0">Clinic activity at a glance</p>
+    </div>
+    <div class="d-flex flex-wrap gap-2">
+        <a asp-controller="Doctors" asp-action="Create" class="btn btn-primary"><i class="bi bi-plus-circle"></i> Add doctor</a>
+        <a asp-controller="Specialties" asp-action="Create" class="btn btn-primary"><i class="bi bi-plus-circle"></i> Add specialty</a>
+        <a asp-controller="Appointments" asp-action="Index" class="btn btn-outline-primary"><i class="bi bi-calendar"></i> Appointments</a>
+        @if (userRole == "Super_admin")
+        {
+            <a asp-controller="Account" asp-action="CreateAdmin" class="btn btn-outline-danger"><i class="bi bi-person-plus"></i> Add admin</a>
+        }
+    </div>
+</div>
+
+<!-- Summary Cards -->
+<div class="row g-3 mb-4">
+    <div class="col-6 col-xl-3">
+        <a asp-controller="Doctors" asp-action="Index" class="card h-100 text-decoration-none">
+            <div class="card-body">
+                <div class="text-secondary">Doctors</div>
+                <div class="display-6 fw-semibold text-primary">@ViewBag.DoctorsCount</div>
+                <span class="small">Manage doctors</span>
+            </div>
+        </a>
+    </div>
+
+    <div class="col-6 col-xl-3">
+        <a asp-controller="Patients" asp-action="Index" class="card h-100 text-decoration-none">
+            <div class="card-body">
+                <div class="text-secondary">Patients</div>
+                <div class="display-6 fw-semibold text-success">@ViewBag.PatientsCount</div>
+                <span class="small">View patient records</span>
+            </div>
+        </a>
+    </div>
+
+    <div class="col-6 col-xl-3">
+        <a asp-controller="Appointments" asp-action="Index" class="card h-100 text-decoration-none">
+            <div class="card-body">
+                <div class="text-secondary">Appointments</div>
+                <div class="display-6 fw-semibold text-info">@ViewBag.AppointmentsCount</div>
+                <span class="small">Review appointments</span>
+            </div>
+        </a>
+    </div>
+
+    <div class="col-6 col-xl-3">
+        <a asp-controller="Specialties" asp-action="Index" class="card h-100 text-decoration-none">
+            <div class="card-body">
+                <div class="text-secondary">Specialties</div>
+                <div class="display-6 fw-semibold text-warning">@ViewBag.SpecialtiesCount</div>
+                <span class="small">Manage specialties</span>
+            </div>
+        </a>
+    </div>
+
+    @if (userRole == "Super_admin")
+    {
+        <div class="col-6 col-xl-3">
+            <a asp-controller="Admins" asp-action="Index" class="card h-100 text-decoration-none">
+                <div class="card-body">
+                    <div class="text-secondary">Admins</div>
+                    <div class="display-6 fw-semibold text-danger">@ViewBag.AdminsCount</div>
+                    <span class="small">System administrators</span>
+                </div>
+            </a>
+        </div>
+    }
+</div>
+
+<!-- Quick Links -->
+<div class="row g-3 mb-4">
+    <div class="col-md-4">
+        <a asp-controller="Services" asp-action="Index" class="btn btn-outline-primary w-100 py-3">Services</a>
+    </div>
+    <div class="col-md-4">
+        <a asp-controller="Testimonials" asp-action="Index" class="btn btn-outline-primary w-100 py-3">Testimonials</a>
+    </div>
+    <div class="col-md-4">
+        <a asp-controller="ContactMessages" asp-action="Index" class="btn btn-outline-primary w-100 py-3">Contact messages</a>
+    </div>
+    @if (userRole == "Super_admin")
+    {
+        <div class="col-md-4">
+            <a asp-controller="WebsiteSettings" asp-action="Edit" class="btn btn-outline-primary w-100 py-3">Website settings</a>
+        </div>
+    }
+</div>
+
+<!-- Charts -->
+<div class="row g-3 mb-4">
+
+    <!-- Appointments by Status -->
+    <div class="col-lg-5">
+        <section class="card h-100">
+            <div class="card-header bg-white py-3">
+                <h2 class="h6 mb-1">Appointments by status</h2>
+                <p class="text-secondary small mb-0">Current distribution across appointment statuses</p>
+            </div>
+            <div class="card-body p-3">
+                <div style="height: 250px; position: relative;">
+                    <canvas id="statusChart" aria-label="Appointments by status chart" role="img"></canvas>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Appointments by Month -->
+    <div class="col-lg-7">
+        <section class="card h-100">
+            <div class="card-header bg-white py-3">
+                <h2 class="h6 mb-1">Appointments by month</h2>
+                <p class="text-secondary small mb-0">Monthly appointment volume over the last 12 months</p>
+            </div>
+            <div class="card-body p-3">
+                <div style="height: 250px; position: relative;">
+                    <canvas id="monthChart" aria-label="Monthly appointments chart" role="img"></canvas>
+                </div>
+            </div>
+        </section>
+    </div>
+
+</div>
+
+<!-- Recent Appointments -->
+<section class="card">
+    <div class="card-header bg-white d-flex flex-wrap justify-content-between align-items-center gap-2">
+        <div>
+            <h2 class="h5 mb-1">Recent appointments</h2>
+            <p class="text-secondary small mb-0">Latest bookings at the clinic</p>
+        </div>
+        <a asp-controller="Appointments" asp-action="Index" class="btn btn-sm btn-outline-primary">View all</a>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th>Patient</th>
+                    <th>Doctor</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model?.Any() == true)
+                {
+                    foreach (var appointment in Model)
+                    {
+                        var status = (AppointmentStatus)appointment.Status;
+                        var badge = status switch
+                        {
+                            AppointmentStatus.Pending   => "text-bg-warning",
+                            AppointmentStatus.Confirmed => "text-bg-primary",
+                            AppointmentStatus.Completed => "text-bg-success",
+                            AppointmentStatus.Cancelled => "text-bg-danger",
+                            AppointmentStatus.Rejected  => "text-bg-secondary",
+                            _                           => "text-bg-light"
+                        };
+
+                        <tr>
+                            <td>
+                                <div class="fw-semibold">@(appointment.Patient?.User?.FullName ?? "N/A")</div>
+                                <small class="text-secondary">@(appointment.Patient?.User?.Phone ?? "No phone")</small>
+                            </td>
+                            <td>
+                                <div class="fw-semibold">Dr. @(appointment.Doctor?.User?.FullName ?? "N/A")</div>
+                                <small class="text-secondary">@(appointment.Doctor?.Specialty?.Name ?? "General")</small>
+                            </td>
+                            <td>@appointment.AppointmentDate.ToString("yyyy-MM-dd")</td>
+                            <td>@appointment.AppointmentTime.ToString("HH:mm")</td>
+                            <td><span class="badge @badge">@status</span></td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="5" class="text-center text-secondary py-5">No recent appointments found.</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</section>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const statusLabels = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(ViewBag.StatusLabels));
+    const statusValues = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(ViewBag.StatusValues));
+    const monthLabels  = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(ViewBag.MonthLabels));
+    const monthValues  = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(ViewBag.MonthValues));
+
+    new Chart(document.getElementById('statusChart'), {
+        type: 'doughnut',
+        data: {
+            labels: statusLabels,
+            datasets: [{
+                data: statusValues,
+                backgroundColor: ['#ffc107', '#0d6efd', '#198754', '#dc3545', '#6c757d'],
+                borderColor: '#ffffff',
+                borderWidth: 2
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            cutout: '62%',
+            plugins: { legend: { position: 'bottom' } }
+        }
+    });
+
+    new Chart(document.getElementById('monthChart'), {
+        type: 'bar',
+        data: {
+            labels: monthLabels,
+            datasets: [{
+                label: 'Appointments',
+                data: monthValues,
+                backgroundColor: '#0d6efd',
+                borderRadius: 4,
+                maxBarThickness: 36
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { display: false } },
+            scales: {
+                y: { beginAtZero: true, ticks: { precision: 0 } }
+            }
+        }
+    });
+</script>

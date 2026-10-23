@@ -1,0 +1,99 @@
+@model ClinicHub.Models.Content.Service
+@{
+    ViewData["Title"] = "Edit Service";
+    Layout = "_Layout";
+}
+
+<div class="container py-4">
+
+    <nav aria-label="breadcrumb" class="mb-3">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a asp-controller="Dashboard" asp-action="Index" class="text-decoration-none">Dashboard</a>
+            </li>
+            <li class="breadcrumb-item">
+                <a asp-action="Index" class="text-decoration-none">Services</a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">Edit service</li>
+        </ol>
+    </nav>
+
+    <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+        <div>
+            <h1 class="h3 mb-1">Edit service</h1>
+            <p class="text-secondary mb-0">Update the service details and display order.</p>
+        </div>
+        <a asp-action="Index" class="btn btn-outline-secondary">Back to services</a>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-xl-7">
+            <form asp-action="Edit" asp-route-id="@Model.Id" method="post" class="card">
+                <input asp-for="Id" type="hidden" />
+
+                <div class="card-header bg-white">
+                    <h2 class="h5 mb-0">Service information</h2>
+                </div>
+
+                <div class="card-body">
+                    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                    <!-- Title -->
+                    <div class="mb-3">
+                        <label asp-for="Title" class="form-label">Service title</label>
+                        <input asp-for="Title" class="form-control" />
+                        <span asp-validation-for="Title" class="text-danger"></span>
+                    </div>
+
+                    <!-- Description -->
+                    <div class="mb-3">
+                        <label asp-for="Description" class="form-label">Description</label>
+                        <textarea asp-for="Description" rows="4" class="form-control"></textarea>
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
+
+                    <!-- Icon -->
+                    <div class="mb-3">
+                        <label asp-for="IconOrImagePath" class="form-label">Service icon</label>
+                        <select asp-for="IconOrImagePath" class="form-select">
+                            <option value="">Select icon</option>
+
+                            <optgroup label="Medical services">
+                                <option value="bi-heart-pulse">Heart care</option>
+                                <option value="bi-lungs">Lung care</option>
+                                <option value="bi-activity">General medical care</option>
+                                <option value="bi-capsule">Medication</option>
+                                <option value="bi-prescription2">Prescriptions</option>
+                                <option value="bi-bandaid">Treatment</option>
+                                <option value="bi-thermometer">Health checkup</option>
+                                <option value="bi-clipboard2-pulse">Medical examination</option>
+                                <option value="bi-file-medical">Medical records</option>
+                                <option value="bi-person-heart">Patient care</option>
+                                <option value="bi-hospital">Hospital care</option>
+                            </optgroup>
+
+                            <optgroup label="Appointments">
+                                <option value="bi-calendar-check">Appointments</option>
+                                <option value="bi-calendar-plus">Book appointment</option>
+                            </optgroup>
+                        </select>
+                        <span asp-validation-for="IconOrImagePath" class="text-danger"></span>
+                    </div>
+
+                    <!-- Display Order -->
+                    <div class="mb-3">
+                        <label asp-for="DisplayOrder" class="form-label">Display order</label>
+                        <input asp-for="DisplayOrder" type="number" min="0" class="form-control" />
+                        <span asp-validation-for="DisplayOrder" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="card-footer bg-white d-flex justify-content-end gap-2">
+                    <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+                    <button type="submit" class="btn btn-primary">Save changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>

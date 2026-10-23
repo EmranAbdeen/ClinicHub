@@ -1,0 +1,541 @@
+@model ClinicHub.ViewModels.HomeViewModel
+
+@{
+    ViewData["Title"] = "Home";
+}
+
+<main class="main">
+
+    <!-- Hero Section -->
+    <section id="hero" class="hero section light-background">
+
+        <img src="~/assets/img/hero-bg.jpg" alt="@(Model.Settings?.ClinicName ?? "ClinicHub")" data-aos="fade-in">
+
+        <div class="container position-relative">
+
+            <div class="welcome position-relative" data-aos="fade-down" data-aos-delay="100">
+                <h2>@(Model.Settings?.HeroTitle ?? ("WELCOME TO " + (Model.Settings?.ClinicName ?? "CLINICHUB")))</h2>
+                <p>@(Model.Settings?.HeroText ?? "We provide comprehensive and compassionate healthcare services for you and your family.")</p>
+                <div class="d-flex gap-3 mt-4">
+                    <a asp-controller="Appointments" asp-action="Book" class="btn btn-primary rounded-pill px-4 py-2">Make an Appointment</a>
+                    <a href="#about" class="btn btn-outline-primary rounded-pill px-4 py-2">Learn More</a>
+                </div>
+            </div>
+
+        </div>
+
+    </section><!-- /Hero Section -->
+
+    <!-- About Section -->
+    <section id="about" class="about section">
+
+        <div class="container">
+
+            <div class="row gy-4 gx-5">
+
+                <div class="col-lg-6 position-relative align-self-start" data-aos="fade-up" data-aos-delay="200">
+                    <img src="~/assets/img/about.jpg" class="img-fluid rounded shadow-sm" alt="About @(Model.Settings?.ClinicName ?? "ClinicHub")">
+                </div>
+
+                <div class="col-lg-6 content" data-aos="fade-up" data-aos-delay="100">
+                    <h3>About @(Model.Settings?.ClinicName ?? "Our Clinic")</h3>
+                    <p>
+                        @(Model.Settings?.AboutText ?? "ClinicHub is committed to delivering exceptional patient care with state-of-the-art medical equipment, highly qualified doctors, and a dedicated healthcare team.")
+                    </p>
+                    <ul>
+                        <li>
+                            <i class="fa-solid fa-user-doctor"></i>
+                            <div>
+                                <h5>Expert Medical Team</h5>
+                                <p>Our specialized physicians provide top-tier care across various clinical fields.</p>
+                            </div>
+                        </li>
+                        <li>
+                            <i class="fa-solid fa-heart-pulse"></i>
+                            <div>
+                                <h5>Patient-Centered Healthcare</h5>
+                                <p>We offer personalized consultations and modern treatment methods tailored to your needs.</p>
+                            </div>
+                        </li>
+                        @if (!string.IsNullOrEmpty(Model.Settings?.WorkingHours))
+                        {
+                            <li>
+                                <i class="fa-solid fa-clock"></i>
+                                <div>
+                                    <h5>Working Hours</h5>
+                                    <p>@Model.Settings.WorkingHours</p>
+                                </div>
+                            </li>
+                        }
+                    </ul>
+                </div>
+
+            </div>
+
+        </div>
+
+    </section><!-- /About Section -->
+
+    <!-- Stats Section -->
+    <section id="stats" class="stats section light-background">
+
+        <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+            <div class="row gy-4 justify-content-center">
+
+                <!-- Doctors -->
+                <div class="col-lg-4 col-md-6 d-flex flex-column align-items-center">
+                    <i class="fa-solid fa-user-doctor"></i>
+
+                    <div class="stats-item text-center">
+                        <span data-purecounter-start="0"
+                              data-purecounter-end="@Model.DoctorsCount"
+                              data-purecounter-duration="1"
+                              class="purecounter"></span>
+                        <p>Doctors</p>
+                    </div>
+                </div>
+
+                <!-- Departments -->
+                <div class="col-lg-4 col-md-6 d-flex flex-column align-items-center">
+                    <i class="fa-regular fa-hospital"></i>
+
+                    <div class="stats-item text-center">
+                        <span data-purecounter-start="0"
+                              data-purecounter-end="@Model.SpecialtiesCount"
+                              data-purecounter-duration="1"
+                              class="purecounter"></span>
+                        <p>Departments</p>
+                    </div>
+                </div>
+
+                <!-- Medical Services -->
+                <div class="col-lg-4 col-md-6 d-flex flex-column align-items-center">
+                    <i class="fa-solid fa-hand-holding-medical"></i>
+
+                    <div class="stats-item text-center">
+                        <span data-purecounter-start="0"
+                              data-purecounter-end="@Model.ServicesCount"
+                              data-purecounter-duration="1"
+                              class="purecounter"></span>
+                        <p>Medical Services</p>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </section><!-- /Stats Section -->
+
+    <!-- Services Section -->
+    <section id="services" class="services section">
+
+        <!-- Section Title -->
+        <div class="container section-title" data-aos="fade-up">
+            <h2>Services</h2>
+            <p>Comprehensive healthcare services provided by skilled medical professionals</p>
+        </div><!-- End Section Title -->
+
+        <div class="container">
+
+            <div class="row gy-4">
+
+                @if (Model.Services.Any())
+                {
+                    var delay = 100;
+                    @foreach (var service in Model.Services)
+                    {
+                        <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="@delay">
+                            <div class="service-item position-relative">
+                                <div class="icon">
+                                    @if (!string.IsNullOrEmpty(service.IconOrImagePath) && (service.IconOrImagePath.StartsWith("bi-") || service.IconOrImagePath.StartsWith("fa")))
+                                    {
+                                        <i class="@service.IconOrImagePath"></i>
+                                    }
+                                    else if (!string.IsNullOrEmpty(service.IconOrImagePath) && (service.IconOrImagePath.Contains("/") || service.IconOrImagePath.Contains(".")))
+                                    {
+                                        <img src="@Url.Content(service.IconOrImagePath)" alt="@service.Title" style="max-height: 48px; max-width: 48px;" />
+                                    }
+                                </div>
+                                <h3>@service.Title</h3>
+                                <p>@service.Description</p>
+                            </div>
+                        </div>
+                        delay += 100;
+                    }
+                }
+                else
+                {
+                    <div class="col-12 text-center py-5">
+                        <i class="bi bi-info-circle text-muted" style="font-size: 50px;"></i>
+
+                        <h3 class="mt-3">No Services Available</h3>
+
+                        <p class="text-muted mb-0">
+                            Our healthcare services will be available here soon.
+                        </p>
+                    </div>
+                }
+
+            </div>
+
+        </div>
+
+    </section><!-- /Services Section -->
+
+    <!-- Departments Section -->
+    <section id="departments" class="departments section">
+
+        <!-- Section Title -->
+        <div class="container section-title" data-aos="fade-up">
+            <h2>Departments</h2>
+            <p>Explore our specialized medical departments</p>
+        </div><!-- End Section Title -->
+
+        <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+            <div class="row">
+
+                @if (Model.Specialties.Any())
+                {
+                    <div class="col-lg-3">
+                        <ul class="nav nav-tabs flex-column">
+                            @for (int i = 0; i < Model.Specialties.Count; i++)
+                            {
+                                var spec = Model.Specialties[i];
+                                <li class="nav-item">
+                                    <a class="nav-link @(i == 0 ? "active show" : "")" data-bs-toggle="tab" href="#departments-tab-@spec.Id">@spec.Name</a>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                    <div class="col-lg-9 mt-4 mt-lg-0">
+                        <div class="tab-content">
+                            @for (int i = 0; i < Model.Specialties.Count; i++)
+                            {
+                                var spec = Model.Specialties[i];
+                                var defaultImgIndex = (i % 5) + 1;
+                                <div class="tab-pane @(i == 0 ? "active show" : "")" id="departments-tab-@spec.Id">
+                                    <div class="row">
+                                        <div class="col-lg-8 details order-2 order-lg-1">
+                                            <h3>@spec.Name</h3>
+                                            <p class="fst-italic" style="white-space: pre-line;">@(spec.Description ?? "Our specialized medical team in this department is equipped with modern clinical tools.")</p>
+                                            @if (spec.Doctors.Any(d => d.IsActive))
+                                            {
+                                                <div class="mt-3">
+                                                    <h6 class="fw-bold">Specialists in this Department:</h6>
+                                                    <ul class="list-unstyled">
+                                                        @foreach (var doc in spec.Doctors.Where(d => d.IsActive))
+                                                        {
+                                                            <li class="py-1">
+                                                                <i class="bi bi-check-circle text-primary me-2"></i>Dr. @(doc.User?.FullName ?? "Doctor")
+                                                                @if (doc.YearsOfExperience.HasValue)
+                                                                {
+                                                                    <span class="text-muted small ms-1">(@doc.YearsOfExperience yrs exp)</span>
+                                                                }
+                                                            </li>
+                                                        }
+                                                    </ul>
+                                                </div>
+                                            }
+                                            <div class="mt-3">
+                                                <a asp-controller="Appointments" asp-action="Book" class="btn btn-sm btn-outline-primary rounded-pill px-3">
+                                                    <i class="bi bi-calendar-plus me-1"></i> Book Appointment in @spec.Name
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4 text-center order-1 order-lg-2">
+                                            @if (!string.IsNullOrEmpty(spec.IconOrImagePath) && (spec.IconOrImagePath.Contains("/") || spec.IconOrImagePath.Contains(".")))
+                                            {
+                                                <img src="@Url.Content(spec.IconOrImagePath)" alt="@spec.Name" class="img-fluid rounded shadow-sm">
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="col-12 text-center py-5">
+                        <i class="bi bi-info-circle text-muted" style="font-size: 50px;"></i>
+
+                        <h3 class="mt-3">No Departments Available</h3>
+
+                        <p class="text-muted mb-0">
+                            Our medical departments will be available here soon.
+                        </p>
+                    </div>
+                }
+
+            </div>
+
+        </div>
+
+    </section><!-- /Departments Section -->
+
+    <!-- Doctors Section -->
+    <section id="doctors" class="doctors section">
+
+        <!-- Section Title -->
+        <div class="container section-title" data-aos="fade-up">
+            <h2>Doctors</h2>
+            <p>Meet our qualified and dedicated healthcare professionals</p>
+        </div><!-- End Section Title -->
+
+        <div class="container">
+
+            <div class="row gy-4">
+
+                @if (Model.Doctors.Any())
+                {
+                    var delay = 100;
+                    @foreach (var doctor in Model.Doctors)
+                    {
+                        <div class="col-lg-6" data-aos="fade-up" data-aos-delay="@delay">
+                            <div class="team-member d-flex align-items-start">
+                                <div class="pic">
+                                    @if (!string.IsNullOrEmpty(doctor.ImagePath))
+                                    {
+                                        <img src="@Url.Content(doctor.ImagePath)" class="img-fluid rounded" alt="@doctor.User?.FullName" style="width: 140px; height: 140px; object-fit: cover;">
+                                    }
+                                </div>
+                                <div class="member-info">
+                                    <h4>Dr. @(doctor.User?.FullName ?? "Doctor")</h4>
+                                    <span>@(doctor.Specialty?.Name ?? "Specialist")</span>
+                                    <p>@(doctor.Biography ?? doctor.ConsultationInfo ?? "Experienced physician dedicated to compassionate patient care.")</p>
+                                    @if (doctor.YearsOfExperience.HasValue)
+                                    {
+                                        <span class="badge bg-light text-primary border mb-2">@doctor.YearsOfExperience Years of Experience</span>
+                                    }
+                                    <div>
+                                        <a asp-controller="Appointments" asp-action="Book" asp-route-doctorId="@doctor.Id" class="btn btn-sm btn-primary rounded-pill px-3 py-1">
+                                            <i class="bi bi-calendar-check me-1"></i> Book Appointment
+                                        </a>
+                                        <a asp-controller="Doctors" asp-action="Details" asp-route-id="@doctor.Id" class="btn btn-sm btn-outline-secondary rounded-pill px-3 py-1">
+                                            <i class="bi bi-info-circle me-1"></i> View Profile
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        delay += 100;
+                    }
+                }
+                else
+                {
+                    <div class="col-12 text-center py-5">
+                        <i class="bi bi-info-circle text-muted" style="font-size: 50px;"></i>
+
+                        <h3 class="mt-3">No Doctors Available</h3>
+
+                        <p class="text-muted mb-0">
+                            Our medical professionals will be available here soon.
+                        </p>
+                    </div>
+                }
+
+            </div>
+
+        </div>
+
+    </section><!-- /Doctors Section -->
+
+    <!-- Testimonials Section -->
+    <section id="testimonials" class="testimonials section">
+
+        <div class="container">
+
+            <div class="row align-items-center">
+
+                <div class="col-lg-5 info" data-aos="fade-up" data-aos-delay="100">
+                    <h3>Testimonials</h3>
+                    <p>
+                        What our patients say about their experience with our medical staff, physicians, and clinic facilities.
+                    </p>
+                </div>
+
+                <div class="col-lg-7" data-aos="fade-up" data-aos-delay="200">
+
+                    <div class="swiper init-swiper">
+                        <script type="application/json" class="swiper-config">
+                            {
+                              "loop": true,
+                              "speed": 600,
+                              "autoplay": {
+                                "delay": 5000
+                              },
+                              "slidesPerView": "auto",
+                              "pagination": {
+                                "el": ".swiper-pagination",
+                                "type": "bullets",
+                                "clickable": true
+                              }
+                            }
+                        </script>
+                        <div class="swiper-wrapper">
+
+                            @if (Model.Testimonials.Any())
+                            {
+                                @foreach (var testimonial in Model.Testimonials)
+                                {
+                                    <div class="swiper-slide">
+                                        <div class="testimonial-item">
+                                            <div class="d-flex">
+                                                @if (!string.IsNullOrEmpty(testimonial.ImagePath))
+                                                {
+                                                    <img src="@Url.Content(testimonial.ImagePath)" class="testimonial-img flex-shrink-0" alt="@testimonial.PatientName" style="width: 70px; height: 70px; object-fit: cover;">
+                                                }
+                                                <div>
+                                                    <h3>@testimonial.PatientName</h3>
+                                                    <h4>Patient</h4>
+                                                    <div class="stars">
+                                                        @for (int i = 1; i <= 5; i++)
+                                                        {
+                                                            if (i <= testimonial.Rating)
+                                                            {
+                                                                <i class="bi bi-star-fill text-warning"></i>
+                                                            }
+                                                            else
+                                                            {
+                                                                <i class="bi bi-star text-muted"></i>
+                                                            }
+                                                        }
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <p>
+                                                <i class="bi bi-quote quote-icon-left"></i>
+                                                <span>@testimonial.Message</span>
+                                                <i class="bi bi-quote quote-icon-right"></i>
+                                            </p>
+                                        </div>
+                                    </div>
+                                }
+                            }
+                            else
+                            {
+                                <div class="swiper-slide">
+                                    <div class="testimonial-item text-center"
+                                         style="width: 100%;">
+
+                                        <i class="bi bi-chat-quote text-muted"
+                                           style="font-size: 50px;"></i>
+
+                                        <h3 class="mt-3">
+                                            No Testimonials Available
+                                        </h3>
+
+                                        <p class="text-muted mb-0">
+                                            Patient testimonials will be displayed here soon.
+                                        </p>
+
+                                    </div>
+                                </div>
+                            }
+
+                        </div>
+                        <div class="swiper-pagination"></div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section><!-- /Testimonials Section -->
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact section">
+
+        <!-- Section Title -->
+        <div class="container section-title" data-aos="fade-up">
+            <h2>Contact Us</h2>
+            <p>We are here to answer your questions and help you schedule your visit</p>
+        </div><!-- End Section Title -->
+
+        <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+            <div class="row gy-4">
+
+                <div class="col-lg-4">
+                    <div class="info-item d-flex" data-aos="fade-up" data-aos-delay="300">
+                        <i class="bi bi-geo-alt flex-shrink-0"></i>
+                        <div>
+                            <h3>Location</h3>
+                            <p>@(Model.Settings?.Address ?? "123 Main Street, Amman, Jordan")</p>
+                        </div>
+                    </div><!-- End Info Item -->
+
+                    <div class="info-item d-flex" data-aos="fade-up" data-aos-delay="400">
+                        <i class="bi bi-telephone flex-shrink-0"></i>
+                        <div>
+                            <h3>Call Us</h3>
+                            <p>@(Model.Settings?.Phone ?? "+962 7 8149 8888")</p>
+                        </div>
+                    </div><!-- End Info Item -->
+
+                    <div class="info-item d-flex" data-aos="fade-up" data-aos-delay="500">
+                        <i class="bi bi-envelope flex-shrink-0"></i>
+                        <div>
+                            <h3>Email Us</h3>
+                            <p>@(Model.Settings?.Email ?? "info@clinichub.com")</p>
+                        </div>
+                    </div><!-- End Info Item -->
+
+                    @if (!string.IsNullOrEmpty(Model.Settings?.WorkingHours))
+                    {
+                        <div class="info-item d-flex" data-aos="fade-up" data-aos-delay="600">
+                            <i class="bi bi-clock flex-shrink-0"></i>
+                            <div>
+                                <h3>Working Hours</h3>
+                                <p>@Model.Settings.WorkingHours</p>
+                            </div>
+                        </div>
+                    }
+
+                </div>
+
+                <div class="col-lg-8">
+                    <form asp-controller="Home" asp-action="SendContactMessage" method="post" class="php-email-form" data-aos="fade-up" data-aos-delay="200">
+                        @Html.AntiForgeryToken()
+                        <div class="row gy-4">
+
+                            <div class="col-md-6">
+                                <input type="text" name="FullName" class="form-control" placeholder="Your Name" value="@Context.Session.GetString("UserName")" required="">
+                            </div>
+
+                            <div class="col-md-6">
+                                <input type="email" class="form-control" name="Email" placeholder="Your Email" value="@Context.Session.GetString("UserEmail")" required="">
+                            </div>
+
+                            <div class="col-md-12">
+                                <input type="text" class="form-control" name="Subject" placeholder="Subject">
+                            </div>
+
+                            <div class="col-md-12">
+                                <textarea class="form-control" name="Message" rows="6" placeholder="Message" required></textarea>
+                            </div>
+
+                            <div class="col-md-12 text-center">
+                                <div class="loading">Loading</div>
+                                <div class="error-message"></div>
+                                <div class="sent-message">Your message has been sent. Thank you!</div>
+
+                                <button type="submit">Send Message</button>
+                            </div>
+
+                        </div>
+                    </form>
+                </div><!-- End Contact Form -->
+
+            </div>
+
+        </div>
+
+    </section><!-- /Contact Section -->
+
+</main>

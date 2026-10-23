@@ -1,0 +1,28 @@
+﻿@model ClinicHub.Models.ErrorViewModel
+
+@{
+    ViewData["Title"] = "Error";
+}
+
+<div class="container d-flex align-items-center justify-content-center" style="min-height: 70vh;">
+
+    <div class="card-body text-center py-5">
+
+        <h1 class="display-1 fw-bold text-danger">401</h1>
+        <h2 class="mb-3 text-danger">Unauthorized - Error</h2>
+        <h5 class="text-muted mt-3"> @Model.Message </h5>
+
+        @if (Model.ShowRequestId)
+        {
+            <p class="text-muted mt-3">
+                <strong>Request ID:</strong>
+                <code>@Model.RequestId</code>
+            </p>
+        }
+
+        <a asp-controller="Home" asp-action="Index" class="btn btn-primary mt-4">
+            Back to Home
+        </a>
+
+    </div>
+</div>

@@ -1,0 +1,124 @@
+@using ClinicHub.DTOs.Doctor
+@model DoctorEditDto
+@{
+    ViewData["Title"] = $"Edit Dr. {Model.FullName}";
+    Layout = "_LayoutAdmin";
+}
+
+<nav aria-label="breadcrumb" class="mb-3">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a asp-controller="Dashboard" asp-action="Index" class="text-decoration-none">Dashboard</a>
+        </li>
+        <li class="breadcrumb-item">
+            <a asp-action="Index" class="text-decoration-none">Doctors</a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">Edit profile</li>
+    </ol>
+</nav>
+
+<div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+    <div>
+        <h1 class="h3 mb-1">Edit doctor</h1>
+        <p class="text-secondary mb-0">Update profile, contact and professional information.</p>
+    </div>
+    <a asp-action="Index" class="btn btn-outline-secondary">Back to doctors</a>
+</div>
+
+<form asp-action="Edit" method="post" enctype="multipart/form-data">
+    <input type="hidden" asp-for="Id" />
+    <input type="hidden" asp-for="IconOrImagePath" />
+
+    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+    <div class="row g-4">
+
+        <!-- Profile Photo -->
+        <div class="col-lg-4">
+            <section class="card mb-3">
+                <div class="card-header bg-white">
+                    <h2 class="h6 mb-0">Profile photo</h2>
+                </div>
+                <div class="card-body text-center text-lg-start">
+                    @if (!string.IsNullOrEmpty(Model.IconOrImagePath))
+                    {
+                        <img src="@Model.IconOrImagePath" alt="Dr. @Model.FullName"
+                             class="rounded-circle object-fit-cover mb-3" width="150" height="150" />
+                    }
+
+                    <label asp-for="ImageFile" class="form-label d-block text-start">Upload new photo</label>
+                    <input asp-for="ImageFile" type="file" class="form-control" accept="image/*" />
+                    <div class="form-text text-start">Leave empty to keep the current photo.</div>
+                    <span asp-validation-for="ImageFile" class="text-danger"></span>
+                </div>
+            </section>
+
+            <div class="alert alert-info mb-0">
+                Profile updates appear in appointments and on the clinic website.
+            </div>
+        </div>
+
+        <!-- Doctor Information -->
+        <div class="col-lg-8">
+            <section class="card">
+                <div class="card-header bg-white">
+                    <h2 class="h5 mb-0">Doctor information</h2>
+                </div>
+
+                <div class="card-body">
+                    <div class="row g-3">
+                        <div class="col-12">
+                            <label asp-for="FullName" class="form-label">Full name</label>
+                            <input asp-for="FullName" class="form-control" />
+                            <span asp-validation-for="FullName" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label asp-for="Email" class="form-label">Email address</label>
+                            <input asp-for="Email" class="form-control" />
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label asp-for="Phone" class="form-label">Phone number</label>
+                            <input asp-for="Phone" class="form-control" maxlength="10"
+                                   inputmode="numeric" placeholder="07XXXXXXXX" />
+                            <div class="form-text">Format: 07XXXXXXXX</div>
+                            <span asp-validation-for="Phone" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label asp-for="SpecialtyId" class="form-label">Specialty</label>
+                            <select asp-for="SpecialtyId" asp-items="ViewBag.Specialties" class="form-select">
+                                <option value="">Select specialty</option>
+                            </select>
+                            <span asp-validation-for="SpecialtyId" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label asp-for="YearsOfExperience" class="form-label">Years of experience</label>
+                            <input asp-for="YearsOfExperience" type="number" min="0" max="60" class="form-control" />
+                            <span asp-validation-for="YearsOfExperience" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-12">
+                            <label asp-for="Biography" class="form-label">Biography</label>
+                            <textarea asp-for="Biography" rows="5" class="form-control"></textarea>
+                            <span asp-validation-for="Biography" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-end gap-2 mt-4">
+                        <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+                        <button type="submit" class="btn btn-primary">Save changes</button>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+    </div>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

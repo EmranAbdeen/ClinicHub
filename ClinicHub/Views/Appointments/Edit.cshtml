@@ -1,0 +1,95 @@
+﻿@model ClinicHub.DTOs.Appointment.AppointmentEditDto
+
+@{
+    ViewData["Title"] = "Edit Appointment";
+    Layout = "_Layout";
+}
+
+<div class="container mt-4 mb-5">
+
+    <!-- Header -->
+    <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+        <div>
+            <h2 class="fw-bold mb-1">Edit Appointment</h2>
+            <p class="text-muted mb-0">Choose a doctor, date and available appointment time.</p>
+        </div>
+
+        <a asp-controller="Patients" asp-action="Profile" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left me-1"></i>Back to Profile
+        </a>
+    </div>
+
+    <!-- Card -->
+    <div class="card shadow-sm border-0">
+
+        <div class="card-header bg-primary text-white py-3">
+            <h5 class="mb-0"><i class="bi bi-calendar2-check me-2"></i>Edit Appointment</h5>
+        </div>
+
+        <div class="card-body p-4">
+            <form asp-controller="Appointments" asp-action="Edit" asp-route-id="@Model.Id" method="post"
+                  id="bookingForm" data-mode="edit"
+                  data-current-date="@Model.AppointmentDate.ToString("yyyy-MM-dd")"
+                  data-current-time="@Model.AppointmentTime.ToString("HH:mm")"
+                  data-appointment-id="@Model.Id">
+
+                <input type="hidden" asp-for="Id" />
+
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                <div class="row">
+
+                    <!-- Doctor -->
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="DoctorId" class="form-label">Doctor</label>
+                        <select asp-for="DoctorId"  class="form-select" id="doctorSelect"
+                                asp-items="@(new Microsoft.AspNetCore.Mvc.Rendering.SelectList(ViewBag.Doctors, "Id", "Name", Model.DoctorId))">
+                            <option value="">Select Doctor</option>
+                        </select>
+                        <span asp-validation-for="DoctorId"  class="text-danger"></span>
+                    </div>
+
+                    <!-- Date -->
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="AppointmentDate" class="form-label">Appointment Date</label>
+
+                        <select asp-for="AppointmentDate" class="form-select" id="dateSelect" disabled>
+                            <option value="">Select Doctor First</option>
+                        </select>
+                        <span asp-validation-for="AppointmentDate"  class="text-danger"></span>
+                    </div>
+
+                    <!-- Time -->
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="AppointmentTime" class="form-label">Available Time</label>
+                        <select asp-for="AppointmentTime" class="form-select" id="timeSelect" disabled>
+                            <option value="">Select Date First</option>
+                        </select>
+                        <span asp-validation-for="AppointmentTime" class="text-danger"></span>
+
+                        <div id="timeMessage" class="form-text">
+                            Select a doctor and date to see available times.
+                        </div>
+                    </div>
+
+                    <!-- Notes -->
+                    <div class="col-12 mb-3">
+                        <label asp-for="Notes" class="form-label">Notes</label>
+                        <textarea asp-for="Notes" class="form-control" rows="4" placeholder="Write a note about your appointment..."></textarea>
+                        <span asp-validation-for="Notes"class="text-danger"></span>
+                    </div>
+                </div>
+
+                <!-- Buttons -->
+                <div class="d-flex justify-content-end gap-2 mt-3">
+                    <a asp-controller="Patients" asp-action="Profile" class="btn btn-secondary">Cancel</a>
+                    <button type="submit" class="btn btn-primary" id="bookButton" disabled>
+                        <i class="bi bi-check-circle me-1"></i> Save Changes
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="~/js/appointment.js"></script>

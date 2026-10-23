@@ -1,0 +1,94 @@
+@using ClinicHub.DTOs.Patient
+@model PatientListDto
+@{
+    ViewData["Title"] = "Patient Details";
+    Layout = "_LayoutAdmin";
+}
+
+<nav aria-label="breadcrumb" class="mb-3">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a asp-controller="Dashboard" asp-action="Index" class="text-decoration-none">Dashboard</a>
+        </li>
+        <li class="breadcrumb-item">
+            <a asp-action="Index" class="text-decoration-none">Patients</a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">Patient details</li>
+    </ol>
+</nav>
+
+<div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+    <div>
+        <h1 class="h3 mb-1">Patient profile</h1>
+        <p class="text-secondary mb-0">Account information for @Model.FullName.</p>
+    </div>
+    <a asp-action="Index" class="btn btn-outline-secondary">Back to patients</a>
+</div>
+
+<div class="row g-4">
+
+    <!-- Profile Card -->
+    <div class="col-lg-4">
+        <section class="card h-100">
+            <div class="card-body text-center">
+                @if (!string.IsNullOrEmpty(Model.ImagePath))
+                {
+                    <img src="@Model.ImagePath" alt="@Model.FullName" width="120" height="120"
+                         class="rounded-circle object-fit-cover mb-3" />
+                }
+                else
+                {
+                    <span class="badge rounded-pill text-bg-primary fs-2 mb-3">@Model.FullName?.FirstOrDefault()</span>
+                }
+
+                <h2 class="h4">@Model.FullName</h2>
+                <p class="text-secondary">Patient #@Model.Id</p>
+
+                @if (Model.IsActive)
+                {
+                    <span class="badge text-bg-success">Active account</span>
+                }
+                else
+                {
+                    <span class="badge text-bg-secondary">Inactive account</span>
+                }
+            </div>
+        </section>
+    </div>
+
+    <!-- Details Card -->
+    <div class="col-lg-8">
+        <section class="card">
+            <div class="card-header bg-white">
+                <h2 class="h5 mb-0">Contact and account details</h2>
+            </div>
+
+            <div class="card-body">
+                <dl class="row mb-0">
+                    <dt class="col-sm-4">Full name</dt>
+                    <dd class="col-sm-8">@Model.FullName</dd>
+
+                    <dt class="col-sm-4">Email</dt>
+                    <dd class="col-sm-8 text-break">
+                        <a href="mailto:@Model.Email">@Model.Email</a>
+                    </dd>
+
+                    <dt class="col-sm-4">Phone</dt>
+                    <dd class="col-sm-8">@(string.IsNullOrWhiteSpace(Model.Phone) ? "Not provided" : Model.Phone)</dd>
+
+                    <dt class="col-sm-4">Date of birth</dt>
+                    <dd class="col-sm-8">
+                        @(Model.DateOfBirth.HasValue ? Model.DateOfBirth.Value.ToString("dd MMMM yyyy") : "Not provided")
+                    </dd>
+
+                    <dt class="col-sm-4">Gender</dt>
+                    <dd class="col-sm-8">@(string.IsNullOrWhiteSpace(Model.Gender) ? "Not provided" : Model.Gender)</dd>
+
+                    <dt class="col-sm-4">Registered</dt>
+                    <dd class="col-sm-8">@Model.CreatedAt.ToString("dd MMMM yyyy, hh:mm tt")</dd>
+                </dl>
+            </div>
+        </section>
+    </div>
+
+</div>

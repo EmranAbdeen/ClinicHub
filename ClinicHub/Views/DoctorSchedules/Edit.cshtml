@@ -1,0 +1,92 @@
+@model ClinicHub.DTOs.Doctor.DoctorProfile.DoctorScheduleDto
+@{
+    ViewData["Title"] = "Edit Schedule";
+    Layout = "_Layout";
+}
+
+<div class="container py-4">
+
+    <nav aria-label="breadcrumb" class="mb-3">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a asp-controller="Doctors" asp-action="Profile">Doctor profile</a>
+            </li>
+            <li class="breadcrumb-item">
+                <a asp-action="Index">My schedule</a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">Edit schedule</li>
+        </ol>
+    </nav>
+
+    <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+        <div>
+            <h1 class="h3 mb-1">Edit schedule</h1>
+            <p class="text-secondary mb-0">Change this availability window and booking status.</p>
+        </div>
+        <a asp-action="Index" class="btn btn-outline-secondary">Back to schedule</a>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-xl-7">
+            <form asp-action="Edit" asp-route-id="@Model.Id" method="post" class="card">
+                <input asp-for="Id" type="hidden" />
+
+                <div class="card-header bg-white">
+                    <h2 class="h5 mb-0">Availability details</h2>
+                </div>
+
+                <div class="card-body">
+                    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label asp-for="AvailableDate" class="form-label">Available date</label>
+                            <input asp-for="AvailableDate" type="date" class="form-control" />
+                            <span asp-validation-for="AvailableDate" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label asp-for="SlotMinutes" class="form-label">Slot duration</label>
+                            <select asp-for="SlotMinutes" class="form-select">
+                                <option value="15">15 minutes</option>
+                                <option value="30">30 minutes</option>
+                                <option value="45">45 minutes</option>
+                                <option value="60">60 minutes</option>
+                            </select>
+                            <span asp-validation-for="SlotMinutes" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label asp-for="StartTime" class="form-label">Start time</label>
+                            <input asp-for="StartTime" type="time" class="form-control" />
+                            <span asp-validation-for="StartTime" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label asp-for="EndTime" class="form-label">End time</label>
+                            <input asp-for="EndTime" type="time" class="form-control" />
+                            <span asp-validation-for="EndTime" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-12">
+                            <div class="form-check">
+                                <input asp-for="IsAvailable" class="form-check-input" />
+                                <label asp-for="IsAvailable" class="form-check-label">Available for patient bookings</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-footer bg-white d-flex justify-content-end gap-2">
+                    <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+                    <button type="submit" class="btn btn-primary">Save changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

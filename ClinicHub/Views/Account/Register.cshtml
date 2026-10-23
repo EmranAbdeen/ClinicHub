@@ -1,0 +1,211 @@
+@using ClinicHub.DTOs.Account
+@model RegisterDto
+
+@{
+    ViewData["Title"] = "Register";
+    Layout = "~/Views/Shared/_LayoutAuth.cshtml";
+}
+
+<div class="container-fluid p-0 min-vh-100 d-flex flex-column">
+    <div class="row g-0 flex-grow-1 min-vh-100">
+
+        <!-- Form Column -->
+        <div class="col-12 col-lg-7 col-xl-6 d-flex flex-column justify-content-center bg-white p-4 p-sm-5 min-vh-100">
+            <div class="w-100 mx-auto" style="max-width: 540px;">
+
+                <!-- ClinicHub Brand -->
+                <div class="mb-4">
+                    <h2 class="fw-bold text-dark mb-1">
+                        Create an Account
+                    </h2>
+                    <p class="text-muted mb-0">Join <strong class="text-primary">ClinicHub</strong> to manage your appointments and healthcare needs.</p>
+                </div>
+
+                @if (TempData["Error"] is string error)
+                {
+                    <div class="alert alert-danger alert-dismissible fade show d-flex align-items-center mb-4 shadow-sm" role="alert">
+                        <div>@error</div>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                }
+
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger py-2 mb-3 small"></div>
+
+                <form asp-controller="Account" asp-action="Register" method="post">
+                    <div class="row g-3">
+
+                        <div class="col-12 col-md-6">
+                            <label asp-for="FullName" class="form-label fw-semibold text-secondary small">Full Name</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light border-end-0 text-muted">
+                                    <i class="bi bi-person"></i>
+                                </span>
+                                <input asp-for="FullName" class="form-control bg-light border-start-0 fs-6" placeholder="e.g. Ahmad Al-Hassan" />
+                            </div>
+                            <span asp-validation-for="FullName" class="text-danger small mt-1 d-block"></span>
+                        </div>
+
+                        <div class="col-12 col-md-6">
+                            <label asp-for="Email" class="form-label fw-semibold text-secondary small">Email Address</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light border-end-0 text-muted">
+                                    <i class="bi bi-envelope"></i>
+                                </span>
+                                <input asp-for="Email" type="email" class="form-control bg-light border-start-0 fs-6" placeholder="name@example.com" />
+                            </div>
+                            <span asp-validation-for="Email" class="text-danger small mt-1 d-block"></span>
+                        </div>
+
+                        <div class="col-12 col-md-6">
+                            <label asp-for="PhoneNumber" class="form-label fw-semibold text-secondary small">Phone Number</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light border-end-0 text-muted">
+                                    <i class="bi bi-telephone"></i>
+                                </span>
+                                <input asp-for="PhoneNumber" class="form-control bg-light border-start-0 fs-6" maxlength="10" placeholder="07xxxxxxxx" />
+                            </div>
+                            <span asp-validation-for="PhoneNumber" class="text-danger small mt-1 d-block"></span>
+                        </div>
+
+                        <div class="col-12 col-md-6">
+                            <label asp-for="DateOfBirth" class="form-label fw-semibold text-secondary small">Date of Birth</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light border-end-0 text-muted">
+                                    <i class="bi bi-calendar-event"></i>
+                                </span>
+                                <input asp-for="DateOfBirth" type="date" class="form-control bg-light border-start-0 fs-6" />
+                            </div>
+                            <span asp-validation-for="DateOfBirth" class="text-danger small mt-1 d-block"></span>
+                        </div>
+
+                        <div class="col-12">
+                            <label asp-for="Gender" class="form-label fw-semibold text-secondary small">Gender</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light border-end-0 text-muted">
+                                    <i class="bi bi-gender-ambiguous"></i>
+                                </span>
+                                <select asp-for="Gender" class="form-select bg-light border-start-0 fs-6">
+                                    <option value="">Select Gender</option>
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
+                                </select>
+                            </div>
+                            <span asp-validation-for="Gender" class="text-danger small mt-1 d-block"></span>
+                        </div>
+
+                        <div class="col-12 col-md-6">
+                            <label asp-for="Password" class="form-label fw-semibold text-secondary small">Password</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light border-end-0 text-muted">
+                                    <i class="bi bi-shield-lock"></i>
+                                </span>
+                                <input asp-for="Password" type="password" id="passwordInput" class="form-control bg-light border-start-0 fs-6" placeholder="At least 6 characters" />
+                                <button type="button" id="togglePassword" class="input-group-text bg-light border-start-0 text-muted" tabindex="-1">
+                                    <i class="bi bi-eye" id="togglePasswordIcon"></i>
+                                </button>
+                            </div>
+                            <span asp-validation-for="Password" class="text-danger small mt-1 d-block"></span>
+                        </div>
+
+                        <div class="col-12 col-md-6">
+                            <label asp-for="ConfirmPassword" class="form-label fw-semibold text-secondary small">Confirm Password</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light border-end-0 text-muted">
+                                    <i class="bi bi-shield-check"></i>
+                                </span>
+                                <input asp-for="ConfirmPassword" type="password" id="confirmPasswordInput" class="form-control bg-light border-start-0 fs-6" placeholder="Repeat password" />
+                                <button type="button" id="toggleConfirmPassword" class="input-group-text bg-light border-start-0 text-muted" tabindex="-1">
+                                    <i class="bi bi-eye" id="toggleConfirmPasswordIcon"></i>
+                                </button>
+                            </div>
+                            <span asp-validation-for="ConfirmPassword" class="text-danger small mt-1 d-block"></span>
+                        </div>
+
+                    </div>
+
+                    <div class="d-grid gap-2 mt-4">
+                        <button type="submit" class="btn btn-primary btn-lg fw-semibold shadow-sm">
+                            <i class="bi bi-person-check-fill me-2"></i>Create Account
+                        </button>
+                    </div>
+
+                    <div class="text-center mt-4 pt-2 border-top">
+                        <p class="text-muted mb-0 small">
+                            Already have an account?
+                            <a asp-controller="Account" asp-action="Login" class="text-primary fw-bold text-decoration-none ms-1">
+                                Log In
+                            </a>
+                        </p>
+                    </div>
+
+                    <div class="text-center mt-3">
+                        <a asp-controller="Home" asp-action="Index" class="text-secondary small text-decoration-none">
+                            <i class="bi bi-arrow-left me-1"></i>Back to ClinicHub home
+                        </a>
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+
+        <!-- Image / Branding Column -->
+        <div class="col-lg-5 col-xl-6 d-none d-lg-block position-relative p-0 overflow-hidden">
+            <img src="~/assetsAccount/images/staff-3.jpg" alt="Clinic Staff" class="w-100 h-100 object-fit-cover position-absolute top-0 start-0" />
+            <div class="position-absolute top-0 start-0 w-100 h-100 auth-hero-overlay d-flex flex-column justify-content-between p-5 text-white">
+                <div class="d-flex align-items-center">
+                    <span class="badge bg-white bg-opacity-25 px-3 py-2 rounded-pill fs-6 fw-normal text-white border border-white border-opacity-25">
+                        <i class="bi bi-heart-pulse me-1"></i> ClinicHub Healthcare System
+                    </span>
+                </div>
+                <div class="mb-4">
+                    <h1 class="display-6 fw-bold mb-3">Join Our Medical Community.</h1>
+                    <p class="lead opacity-90 mb-4 fs-6">
+                        Register today to access certified physicians, schedule clinic visits, and keep your health records securely organized in one place.
+                    </p>
+                    <div class="d-flex flex-column gap-2">
+                        <div class="d-flex align-items-center gap-2">
+                            <i class="bi bi-check-circle-fill text-info"></i>
+                            <span class="small">Instant online booking with top clinic doctors</span>
+                        </div>
+                        <div class="d-flex align-items-center gap-2">
+                            <i class="bi bi-check-circle-fill text-info"></i>
+                            <span class="small">Secure medical profile and consultation history</span>
+                        </div>
+                        <div class="d-flex align-items-center gap-2">
+                            <i class="bi bi-check-circle-fill text-info"></i>
+                            <span class="small">Fast and simple account activation</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    // Password
+    const togglePassword = document.getElementById('togglePassword');
+    const passwordInput = document.getElementById('passwordInput');
+    const togglePasswordIcon = document.getElementById('togglePasswordIcon');
+
+    togglePassword.addEventListener('click', function () {
+        const isHidden = passwordInput.type === "password";
+        passwordInput.type = isHidden ? "text" : "password";
+        togglePasswordIcon.classList.toggle('bi-eye');
+        togglePasswordIcon.classList.toggle('bi-eye-slash');
+    });
+
+    // Confirm Password
+    const toggleConfirmPassword = document.getElementById('toggleConfirmPassword');
+    const confirmPasswordInput = document.getElementById('confirmPasswordInput');
+    const toggleConfirmPasswordIcon = document.getElementById('toggleConfirmPasswordIcon');
+
+    toggleConfirmPassword.addEventListener('click', function () {
+        const isHidden = confirmPasswordInput.type === "password";
+        confirmPasswordInput.type = isHidden ? "text" : "password";
+        toggleConfirmPasswordIcon.classList.toggle('bi-eye');
+        toggleConfirmPasswordIcon.classList.toggle('bi-eye-slash');
+    });
+</script>

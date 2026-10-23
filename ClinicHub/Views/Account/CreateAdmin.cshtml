@@ -1,0 +1,311 @@
+﻿@using ClinicHub.DTOs.Account
+@model CreateAdminDto
+
+@{
+    ViewData["Title"] = "Create Admin";
+    Layout = "~/Views/Shared/_LayoutAuth.cshtml";
+}
+
+<div class="container-fluid p-0 min-vh-100 d-flex flex-column">
+    <div class="row g-0 flex-grow-1 min-vh-100">
+
+        <!-- Form Column -->
+        <div class="col-12 col-lg-7 col-xl-6 d-flex flex-column justify-content-center bg-white p-4 p-sm-5">
+
+            <div class="w-100 mx-auto" style="max-width: 650px;">
+
+                <!-- Header -->
+                <div class="mb-4">
+
+                    <h2 class="fw-bold text-dark mb-1">
+                        Create Admin
+                    </h2>
+
+                    <p class="text-muted mb-0">
+                        Add a new administrator to the
+                        <strong class="text-primary">ClinicHub</strong>
+                        system.
+                    </p>
+
+                </div>
+
+
+                <!-- Validation Summary -->
+                <div asp-validation-summary="ModelOnly"
+                     class="alert alert-danger alert-dismissible fade show py-2 mb-4 small"
+                     role="alert">
+
+                    <button type="button"
+                            class="btn-close"
+                            data-bs-dismiss="alert"
+                            aria-label="Close">
+                    </button>
+
+                </div>
+
+
+                <form asp-action="CreateAdmin"
+                      asp-controller="Account"
+                      method="post">
+
+                    <div class="row g-3">
+
+
+                        <!-- Full Name -->
+                        <div class="col-12 col-md-6">
+
+                            <label asp-for="FullName"
+                                   class="form-label fw-semibold text-secondary small">
+                                Full Name
+                            </label>
+
+                            <div class="input-group">
+
+                                <span class="input-group-text bg-light border-end-0 text-muted">
+                                    <i class="bi bi-person"></i>
+                                </span>
+
+                                <input asp-for="FullName"
+                                       class="form-control bg-light border-start-0"
+                                       placeholder="e.g. Ahmad Al-Hassan" />
+
+                            </div>
+
+                            <span asp-validation-for="FullName"
+                                  class="text-danger small mt-1 d-block">
+                            </span>
+
+                        </div>
+
+
+                        <!-- Email -->
+                        <div class="col-12 col-md-6">
+
+                            <label asp-for="Email"
+                                   class="form-label fw-semibold text-secondary small">
+                                Email Address
+                            </label>
+
+                            <div class="input-group">
+
+                                <span class="input-group-text bg-light border-end-0 text-muted">
+                                    <i class="bi bi-envelope"></i>
+                                </span>
+
+                                <input asp-for="Email"
+                                       type="email"
+                                       class="form-control bg-light border-start-0"
+                                       placeholder="admin@clinichub.com" />
+
+                            </div>
+
+                            <span asp-validation-for="Email"
+                                  class="text-danger small mt-1 d-block">
+                            </span>
+
+                        </div>
+
+
+                        <!-- Phone -->
+                        <div class="col-12 col-md-6">
+
+                            <label asp-for="PhoneNumber"
+                                   class="form-label fw-semibold text-secondary small">
+                                Phone Number
+                            </label>
+
+                            <div class="input-group">
+
+                                <span class="input-group-text bg-light border-end-0 text-muted">
+                                    <i class="bi bi-telephone"></i>
+                                </span>
+
+                                <input asp-for="PhoneNumber"
+                                       class="form-control bg-light border-start-0"
+                                       maxlength="10"
+                                       inputmode="numeric"
+                                       placeholder="07xxxxxxxx" />
+
+                            </div>
+
+                            <span asp-validation-for="PhoneNumber"
+                                  class="text-danger small mt-1 d-block">
+                            </span>
+
+                        </div>
+
+
+                        <!-- Password -->
+                        <div class="col-12 col-md-6">
+
+                            <label asp-for="Password"
+                                   class="form-label fw-semibold text-secondary small">
+                                Password
+                            </label>
+
+                            <div class="input-group">
+
+                                <span class="input-group-text bg-light border-end-0 text-muted">
+                                    <i class="bi bi-shield-lock"></i>
+                                </span>
+
+                                <input asp-for="Password"
+                                       type="password"
+                                       class="form-control bg-light border-start-0"
+                                       placeholder="Enter password" />
+
+                            </div>
+
+                            <span asp-validation-for="Password"
+                                  class="text-danger small mt-1 d-block">
+                            </span>
+
+                        </div>
+
+
+                        <!-- Confirm Password -->
+                        <div class="col-12 col-md-6">
+
+                            <label asp-for="ConfirmPassword"
+                                   class="form-label fw-semibold text-secondary small">
+                                Confirm Password
+                            </label>
+
+                            <div class="input-group">
+
+                                <span class="input-group-text bg-light border-end-0 text-muted">
+                                    <i class="bi bi-shield-check"></i>
+                                </span>
+
+                                <input asp-for="ConfirmPassword"
+                                       type="password"
+                                       class="form-control bg-light border-start-0"
+                                       placeholder="Repeat password" />
+
+                            </div>
+
+                            <span asp-validation-for="ConfirmPassword"
+                                  class="text-danger small mt-1 d-block">
+                            </span>
+
+                        </div>
+
+
+                    </div>
+
+
+                    <!-- Buttons -->
+                    <div class="d-grid gap-2 mt-4">
+
+                        <button type="submit"
+                                class="btn btn-primary btn-lg fw-semibold shadow-sm">
+
+                            <i class="bi bi-person-plus-fill me-2"></i>
+                            Create Admin
+
+                        </button>
+
+                    </div>
+
+
+                    <!-- Cancel -->
+                    <div class="text-center mt-3">
+
+                        <a asp-controller="Dashboard"
+                           asp-action="Index"
+                           class="btn btn-link text-secondary text-decoration-none">
+
+                            <i class="bi bi-arrow-left me-1"></i>
+                            Back to Dashboard
+
+                        </a>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+
+
+        <!-- Image / Branding Column -->
+        <div class="col-lg-5 col-xl-6 d-none d-lg-block position-relative p-0 overflow-hidden">
+
+            <img src="~/assets/img/Create/admin.jpg"
+                 alt="Clinic Administrator"
+                 class="w-100 h-100 object-fit-cover position-absolute top-0 start-0" />
+
+            <div class="position-absolute top-0 start-0 w-100 h-100 auth-hero-overlay d-flex flex-column justify-content-between p-5 text-white">
+
+
+                <!-- Badge -->
+                <div class="d-flex align-items-center">
+
+                    <span class="badge bg-white bg-opacity-25 px-3 py-2 rounded-pill fs-6 fw-normal text-white border border-white border-opacity-25">
+
+                        <i class="bi bi-shield-check me-1"></i>
+                        ClinicHub Healthcare System
+
+                    </span>
+
+                </div>
+
+
+                <!-- Content -->
+                <div class="mb-4">
+
+                    <h1 class="display-6 fw-bold mb-3">
+                        Add a New Admin.
+                    </h1>
+
+                    <p class="lead opacity-90 mb-4 fs-6">
+                        Create an administrator account to help manage
+                        doctors, patients, appointments, and clinic content.
+                    </p>
+
+
+                    <div class="d-flex flex-column gap-2">
+
+                        <div class="d-flex align-items-center gap-2">
+
+                            <i class="bi bi-check-circle-fill text-info"></i>
+
+                            <span class="small">
+                                Create a secure administrator account
+                            </span>
+
+                        </div>
+
+
+                        <div class="d-flex align-items-center gap-2">
+
+                            <i class="bi bi-check-circle-fill text-info"></i>
+
+                            <span class="small">
+                                Manage doctors and patients
+                            </span>
+
+                        </div>
+
+
+                        <div class="d-flex align-items-center gap-2">
+
+                            <i class="bi bi-check-circle-fill text-info"></i>
+
+                            <span class="small">
+                                Manage appointments and clinic content
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+</div>

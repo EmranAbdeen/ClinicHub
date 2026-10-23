@@ -1,0 +1,65 @@
+@model ClinicHub.DTOs.Specialties.SpecialtyCreateDto
+@{
+    ViewData["Title"] = "Add Specialty";
+    Layout = "_LayoutAdmin";
+}
+
+<nav aria-label="breadcrumb" class="mb-3">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a asp-controller="Dashboard" asp-action="Index" class="text-decoration-none">Dashboard</a>
+        </li>
+        <li class="breadcrumb-item">
+            <a asp-action="Index" class="text-decoration-none">Specialties</a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">Add specialty</li>
+    </ol>
+</nav>
+
+<div class="mb-4">
+    <h1 class="h3 mb-1">Add specialty</h1>
+    <p class="text-secondary mb-0">Create a specialty for the clinic directory.</p>
+</div>
+
+<div class="row justify-content-center">
+    <div class="col-lg-8 col-xl-7">
+        <form asp-controller="Specialties" asp-action="Create" method="post"
+              enctype="multipart/form-data" class="card">
+
+            <div class="card-header bg-white">
+                <h2 class="h5 mb-0">Specialty information</h2>
+            </div>
+
+            <div class="card-body">
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                <!-- Name -->
+                <div class="mb-3">
+                    <label asp-for="Name" class="form-label">Specialty name</label>
+                    <input asp-for="Name" class="form-control" placeholder="e.g. Cardiology" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+
+                <!-- Description -->
+                <div class="mb-3">
+                    <label asp-for="Description" class="form-label">Description</label>
+                    <textarea asp-for="Description" class="form-control" rows="4"
+                              placeholder="Describe this specialty"></textarea>
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+
+                <!-- Image -->
+                <div class="mb-3">
+                    <label asp-for="ImageFile" class="form-label">Specialty image</label>
+                    <input asp-for="ImageFile" type="file" class="form-control" accept="image/*" />
+                    <span asp-validation-for="ImageFile" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="card-footer bg-white d-flex justify-content-end gap-2">
+                <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+                <button type="submit" class="btn btn-primary">Add specialty</button>
+            </div>
+        </form>
+    </div>
+</div>
