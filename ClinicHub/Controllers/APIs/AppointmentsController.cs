@@ -2,7 +2,6 @@
 using ClinicHub.Filters;
 using ClinicHub.Models;
 using ClinicHub.Models.Enums;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
