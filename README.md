@@ -1,4 +1,4 @@
-# ClinicHub – Smart Clinic Appointment Management System
+# ClinicHub – Clinic Appointment Management System
 
 ClinicHub is a web-based clinic management system built with ASP.NET Core MVC and SQL Server. It helps manage doctors, patients, medical specialties, working schedules, and appointments in one place. The system provides separate accounts for administrators, doctors, and patients, with different permissions for each role.
 
@@ -185,6 +185,8 @@ Add screenshots of the application to demonstrate the main pages and features.
 | Admin Dashboard | ![Admin Dashboard](/docs/Dashboard.png)     |
 | Doctors Page    | ![Doctors Page](/docs/Doctor.png)           |
 | Patient Profile | ![Patient Profile](/docs/patient.png)       |
+| Appointments    | ![Appointments](/docs/Appointments.png)     |
+| Appointments_  | ![Appointments_](/docs/Appointments_.png)   |
 | DoctorSchedule  | ![DoctorSchedule](/docs/DoctorSchedule.png) |
 
 Place your screenshots in a folder such as `docs/Screenshots/` and update this section with their paths.
