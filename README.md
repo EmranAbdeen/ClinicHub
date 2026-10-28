@@ -186,7 +186,7 @@ Add screenshots of the application to demonstrate the main pages and features.
 | Doctors Page    | ![Doctors Page](/docs/Doctor.png)           |
 | Patient Profile | ![Patient Profile](/docs/patient.png)       |
 | Appointments    | ![Appointments](/docs/Appointments.png)     |
-| Appointments_  | ![Appointments_](/docs/Appointments_.png)   |
+| Appointments_  | ![Appointments_](/docs/Appointments_.png)    |
 | DoctorSchedule  | ![DoctorSchedule](/docs/DoctorSchedule.png) |
 
 Place your screenshots in a folder such as `docs/Screenshots/` and update this section with their paths.
