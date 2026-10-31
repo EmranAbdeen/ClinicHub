@@ -27,6 +27,14 @@
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
                 }
+
+                @if (TempData["Success"] is string success)
+                {
+                    <div class="alert alert-success alert-dismissible fade show d-flex align-items-center mb-4 shadow-sm" role="alert">
+                        <div>@success</div>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                }
                 <div asp-validation-summary="ModelOnly" class="alert alert-danger py-2 mb-3 small"></div>
 
                 <form asp-controller="Account" asp-action="Login" method="post" >

@@ -249,7 +249,6 @@ namespace ClinicHub.Controllers
             if (patient == null)
                 return NotFound();
 
-            // لا نعتمد على PatientId القادم من الـ form
             dto.PatientId = patient.Id;
 
             // Validate Doctor

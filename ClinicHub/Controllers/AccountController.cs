@@ -64,14 +64,8 @@ namespace ClinicHub.Controllers
                 return View(registerDto);
             }
 
+            TempData["Success"] = "Your account was created successfully. Please log in.";
             return RedirectToAction("Login");
-        }
-
-        [HttpGet]
-        [AuthFilter(Roles = new[] { "Super_admin" })]
-        public IActionResult CreateAdmin() 
-        { 
-            return View();
         }
 
         [HttpGet]
@@ -105,6 +99,13 @@ namespace ClinicHub.Controllers
             return RedirectToAction("ChangePassword");
         }
 
+        [HttpGet]
+        [AuthFilter(Roles = new[] { "Super_admin" })]
+        public IActionResult CreateAdmin()
+        {
+            return View();
+        }
+
         [HttpPost]
         [AuthFilter(Roles = new[] { "Super_admin" })]
         public async Task<IActionResult> CreateAdmin(CreateAdminDto dto) 
@@ -122,7 +123,6 @@ namespace ClinicHub.Controllers
             } 
             
             TempData["Success"] = "Admin added successfully.";
-            
             return RedirectToAction("Index", "Dashboard"); 
         }
 
